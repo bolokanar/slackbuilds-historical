@@ -1,0 +1,6 @@
+0ad-data
+OpenAL
+gloox
+enet >= 1.3
+SDL2
+wxPython
