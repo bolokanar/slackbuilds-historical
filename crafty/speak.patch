@@ -1,0 +1,11 @@
+--- a/speak
++++ b/speak
+@@ -7,7 +7,7 @@
+ my $playprg   = "/usr/bin/esdplay";
+ 
+ # Where the sound files are located
+-my $soundpath = "/opt/chess/sound";
++my $soundpath = "/usr/share/games/crafty/sound";
+ # Which language to use (each supported language is in a separate
+ # subdir of $soundpath)
+ my $language  = "english";

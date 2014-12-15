@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+        |-----handy-ruler------------------------------------------------------|
+crafty: crafty (A computer chess program)
+crafty:
+crafty: Crafty is a free, open-source computer chess program developed by Dr.
+crafty: Robert M. Hyatt.  Crafty is constantly being improved by a small team
+crafty: of contributors, including Dr. Hyatt.
+crafty:
+crafty: To learn more about Crafty, visit Dr. Hyatt's home page.
+crafty: http://www.cis.uab.edu/hyatt
+crafty:
+crafty:
+crafty:

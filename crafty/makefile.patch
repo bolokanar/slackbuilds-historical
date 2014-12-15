@@ -1,0 +1,11 @@
+--- a/Makefile
++++ b/Makefile
+@@ -87,7 +87,7 @@
+ unix-gcc:
+ 	$(MAKE) target=UNIX \
+ 		CC=gcc CXX=g++ \
+-		opt='-DTEST -DINLINEASM -DPOPCNT -DCPUS=8' \
++		opt='-DTEST -DINLINEASM -DPOPCNT -DCPUS=8 ${OPTS}' \
+ 		CFLAGS='-Wall -pipe -O3 -fprofile-use -fprofile-correction \
+                         -pthread' \
+ 		CXFLAGS='-Wall -pipe -O3 -fprofile-use -fprofile-correction \
