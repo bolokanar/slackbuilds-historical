@@ -65,9 +65,9 @@ cp -v crafty $PKG/usr/games
 
 # Install books
 install -d -m0755 $PKG/usr/share/games/crafty
-install -m644 $CWD/books/book.bin $PKG/usr/share/games/crafty
-install -m644 $CWD/books/books.bin $PKG/usr/share/games/crafty
-install -m644 $CWD/books/bookc.bin $PKG/usr/share/games/crafty
+install -m644 $CWD/book.bin $PKG/usr/share/games/crafty
+install -m644 $CWD/books.bin $PKG/usr/share/games/crafty
+install -m644 $CWD/bookc.bin $PKG/usr/share/games/crafty
 
 # Install sounds
 #unzip -o $CWD/sound.zip
