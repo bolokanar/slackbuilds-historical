@@ -1,0 +1,12 @@
+diff --git a/html/tree.h b/html/tree.h
+index d0d49b4..7654e85 100644
+--- a/html/tree.h
++++ b/html/tree.h
+@@ -46,6 +46,7 @@
+ #define tree_hh_
+ 
+ #include <cassert>
++#include <cstddef>
+ #include <memory>
+ #include <stdexcept>
+ #include <iterator>
