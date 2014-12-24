@@ -1,0 +1,63 @@
+#!/bin/sh
+
+PKGNAM=lsb-release
+VERSION=${VERSION:-1.4}
+BUILD=${BUILD:-1}
+TAG=${TAG:-_sbolokanov}
+SLACKVER=14.1
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i486 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/sbolokanov}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+set -eu
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z*
+cd $PKGNAM-$VERSION
+
+patch -Np0 < $CWD/lsb_release_description.patch
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+make
+
+mkdir -pv $PKG/etc
+echo "LSB_VERSION=${VERSION}" >> "${PKG}/etc/lsb-release"
+echo "DISTRIB_ID=Slackware64" >> "${PKG}/etc/lsb-release"
+echo "DISTRIB_RELEASE=${SLACKVER}" >> "${PKG}/etc/lsb-release"
+echo "DISTRIB_CODENAME=\"darkstar\"" >> $PKG/etc/lsb-release
+echo "DISTRIB_DESCRIPTION=\"Slackware64 GNU/Linux\"" >> "${PKG}/etc/lsb-release"
+
+install -Dm 644 lsb_release.1.gz "${PKG}/usr/man/man1/lsb_release.1.gz"
+install -Dm 755 lsb_release "${PKG}/usr/bin/lsb_release"
+
+mkdir -pv $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  INSTALL README ChangeLog lsb_release.examples lsb-release.template \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+cat $CWD/$PKGNAM.SlackBuild > $PKG/usr/doc/$PKGNAM-$VERSION/$PKGNAM.SlackBuild
+
+mkdir -pv $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
