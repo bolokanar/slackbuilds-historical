@@ -5,15 +5,15 @@
 # You must make exactly 11 lines for the formatting to be correct.  It's also
 # customary to leave one space after the ':' except on otherwise blank lines.
 
-   |-----handy-ruler------------------------------------------------------|
-tox: tox (instant messaging)
-tox:
-tox: With the rise of governmental monitoring programs, Tox, a FOSS
-tox: initiative, aims to be an easy to use, all-in-one communication
-tox: platform that ensures their users full privacy and secure message
-tox: delivery.
-tox:
-tox: Homepage: http://tox.im
-tox:
-tox:
-tox:
+       |-----handy-ruler------------------------------------------------------|
+toxcore: toxcore (instant messaging)
+toxcore:
+toxcore: With the rise of governmental monitoring programs, Tox, a FOSS
+toxcore: initiative, aims to be an easy to use, all-in-one communication
+toxcore: platform that ensures their users full privacy and secure message
+toxcore: delivery.
+toxcore:
+toxcore: Homepage: https://github.com/irungentoo/toxcore
+toxcore:
+toxcore:
+toxcore:
