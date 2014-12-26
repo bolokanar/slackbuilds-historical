@@ -41,9 +41,9 @@ cd $TMP
 #tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 #cd $PRGNAM-$VERSION
 
-rm -rf ProjectTox-Core
-git clone https://github.com/irungentoo/ProjectTox-Core.git
-cd ProjectTox-Core
+rm -rf toxcore
+git clone https://github.com/irungentoo/toxcore.git
+cd toxcore
 
 chown -R root:root .
 find -L . \
@@ -52,7 +52,7 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-autoreconf -i
+./autogen.sh
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \

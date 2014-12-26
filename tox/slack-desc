@@ -6,14 +6,14 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
    |-----handy-ruler------------------------------------------------------|
-tox: tox (a library for network communication and cryptography)
+tox: tox (instant messaging)
 tox:
-tox: A FOSS instant messaging application aimed to replace Skype
-tox: (git version)
+tox: With the rise of governmental monitoring programs, Tox, a FOSS
+tox: initiative, aims to be an easy to use, all-in-one communication
+tox: platform that ensures their users full privacy and secure message
+tox: delivery.
 tox:
-tox:
-tox: http://tox.im
-tox:
+tox: Homepage: http://tox.im
 tox:
 tox:
 tox:
