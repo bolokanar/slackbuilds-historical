@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+     |-----handy-ruler------------------------------------------------------|
+godot: godot (game engine)
+godot:
+godot: Godot is an advanced, feature packed, multi-platform 2D and 3D game
+godot: engine. It provides a huge set of common tools, so you can just focus
+godot: on making your game without reinventing the wheel.
+godot: Godot is is completely Free and Open Source under the very permissive
+godot: MIT License.
+godot:
+godot: Created by Juan Linietsky and Ariel Manzur.
+godot: Homepage: http://www.godotengine.org
+godot:
