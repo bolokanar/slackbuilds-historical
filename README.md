@@ -1,5 +1,4 @@
-WARNING: THIS IS TO BE REVISITED NEXT (2015) YEAR. USE ON YOUR OWN RESPONSIBILITY.
-TODO: To be continued in... 12 (+-) hours
+WARNING: Some scripts are to be revisited.
 
 My SlackBuilds for Slackware.
 
