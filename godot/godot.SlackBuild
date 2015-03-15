@@ -51,40 +51,45 @@ find -L . \
  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 # Build engine
-scons platform=x11 -j $JOBS CCFLAGS="${SLKCFLAGS}"
+scons platform=x11 tools=${GODOTEDITOR:-yes} -j $JOBS CCFLAGS="${SLKCFLAGS}"
 
-# Build server
+# Build server - do not uncomment - not tested
 #scons platform=server -j $JOBS CCFLAGS="${SLKCFLAGS}"
 
-# Building Export Templates
+# Building Export Templates - do not uncomment - not tested
 #scons platform=x11 tools=no target=release bits=${LIBDIRSUFFIX} -j $JOBS CCFLAGS="${SLKCFLAGS}"
 #scons platform=x11 tools=no target=release_debug bits=${LIBDIRSUFFIX} -j $JOBS CCFLAGS="${SLKCFLAGS}"
 
-# Make docs
-cd doc
-chmod +x make_doc.sh
-./make_doc.sh
-cd ..
+# Make docs - not working yet
+#cd doc
+#chmod +x make_doc.sh
+#./make_doc.sh
+#cd ..
 
 #install -dm755 "$pkgdir/etc"
 #install -Dm 644 lsb_release.1.gz "$pkgdir/usr/share/man/man1/lsb_release.1.gz"
 #install -Dm 755 lsb_release "$pkgdir/usr/bin/lsb_release"
-install -Dm 755 bin/godot.x11.tools.64 $PKG/usr/bin/godot-engine
 
-#install shared data
+NAME2="godot.x11.tools.64"
+install -Dm 755 bin/${NAME2} $PKG/usr/bin/${NAME2}
+$(
+  cd $PKG/usr/bin
+  ln -s ${NAME2} godot-engine
+)
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp $CWD/bettercollada-1.0stable.zip \
-  $PKG/usr/doc/$PRGNAM-$VERSION
-cp -r doc \
-  $PKG/usr/doc/$PRGNAM-$VERSION/docs
-cp -a LICENSE.md README.md \
+cp -a LICENSE.md README.md logo.png \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
+cp $CWD/bettercollada-1.0stable.zip \
+  $PKG/usr/doc/$PRGNAM-$VERSION
+#cp -r doc \
+#  $PKG/usr/doc/$PRGNAM-$VERSION/docs
+
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/slack-required > $PKG/install/slack-required
+#cat $CWD/slack-required > $PKG/install/slack-required
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
