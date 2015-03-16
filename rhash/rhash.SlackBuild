@@ -25,20 +25,20 @@
 
 # Changelog:
 #    v1.3.3 - Re-done the sript and send it to SBo
-#    27.02.2015 - no headers!? - thanks to Marcel Saegebarth for spotting this
+#    27.2.2015 - no headers!? - thanks to Marcel Saegebarth for spotting this
+#    3.3.2015 - added STATICLIB per Marcel Saegebarth request
+#      П.П. Честит ден на Освобождението, българи!
 
 PRGNAM=rhash
 VERSION=${VERSION:-1.3.3}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_SBo}
 
 # Shall we compile with OpenSSL support?
 OPENSSL=${OPENSSL:-yes}
 
-if [ "$OPENSSL" = "yes" ]; then
-  OPTCFLAGS="-DOPENSSL_RUNTIME -rdynamic"
-  OPTLDFLAGS="-ldl"
-fi
+# Shall we install static libraries?
+STATICLIB=${STATICLIB:-no}
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/SBo}
@@ -69,6 +69,15 @@ fi
 
 set -e
 
+if [ "$OPENSSL" = "yes" ]; then
+  OPTCFLAGS="-DOPENSSL_RUNTIME -rdynamic"
+  OPTLDFLAGS="-ldl"
+fi
+
+if [ "$STATICLIB" = "yes" ]; then
+  INSTALLSTATICLIB="install-lib-static"
+fi
+
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
@@ -97,7 +106,7 @@ make ADDCFLAGS="${SLKCFLAGS} -DUSE_GETTEXT ${OPTCFLAGS}" \
     PREFIX=/usr \
     LIBDIR=/usr/lib${LIBDIRSUFFIX} \
     DESTDIR=$PKG \
-    install-lib-shared
+    install-lib-shared $INSTALLSTATICLIB
 
 # Install headers
 make -C librhash \
