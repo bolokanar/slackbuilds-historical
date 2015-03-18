@@ -23,10 +23,16 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=0ad
-VERSION=${VERSION:-0.0.17}
+VERSION=${VERSION:-0.0.18}
 RELEASE=${RELEASE:-alpha}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
+
+SDL2=${SDL2:-no}
+
+if [ "$SDL2" = "yes" ]; then
+  WITHSDL2="--sdl2"
+fi
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/SBo}
@@ -55,7 +61,7 @@ else
   LIBDIRSUFFIX=""
 fi
 
-set -eu
+set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -86,9 +92,10 @@ build/workspaces/update-workspaces.sh \
   --bindir=/usr/games \
   --datadir=/usr/share/games/0ad \
   --libdir=/usr/lib${LIBDIRSUFFIX}/0ad \
+  $WITHSDL2 \
   --${ATLAS:-disable}-atlas
 
-  # --with-system-mozjs24 - js in repo is too old
+  # --with-system-mozjs31 - js in repo is too old
 
 make CONFIG=Release -C build/workspaces/gcc
 
