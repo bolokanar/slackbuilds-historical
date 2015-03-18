@@ -5,11 +5,11 @@
 # changelog:
 #    v1.0.0/master - Simon Bolokanov
 #    v1.1.0 - 12.12.2014
-
+#     15.3.2015 - main site is down, fixed download url. Made some script clean ups
 
 PRGNAM=dunst
 VERSION=${VERSION:-1.1.0}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_sbolokanov}
 
 if [ -z "$ARCH" ]; then
@@ -58,7 +58,7 @@ if [ "${VERSION}" = "master" ]; then
   git clone $GITROOT
   cd $PRGNAM
 else
-  tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
+  tar xvf $CWD/$PRGNAM-$VERSION.tar.?z* || tar xvf $CWD/v$VERSION.tar.?z*
   cd $PRGNAM-$VERSION
 fi
 
@@ -69,7 +69,7 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# Change config dir to Slackware specification
+# Change config dir to appropriate location
 sed -i 's,${PREFIX}/share/dunst,/etc/xdg/dunst,' Makefile
 
 CFLAGS="$SLKCFLAGS" \
@@ -82,8 +82,7 @@ make DESTDIR=$PKG \
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 
 mkdir -pv $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  AUTHORS CHANGELOG INSTALL LICENSE README* RELEASE_NOTES* docs/* \
+cp -a AUTHORS CHANGELOG INSTALL LICENSE docs/dunst_explainations.png \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
