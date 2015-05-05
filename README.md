@@ -1,6 +1,5 @@
 WARNING: Some scripts are to be revisited.
 
-My SlackBuilds for Slackware.
+NOTE: All scripts are meant for -current.
 
-Симон Болоканов <sbolokanov@abv.bg>
-
+Симон С. Болоканов <sbolokanov@abv.bg>
