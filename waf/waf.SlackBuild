@@ -1,0 +1,80 @@
+#!/bin/sh
+
+# Written by: Simon Bolokanov <sbolokanov@hotmail.com>
+# For: waf
+# Version: 1.8.10
+# URL: http://code.google.com/p/waf/
+# Dependecies: setconf
+# OS: Slackware64 14.1
+
+PKGNAM=waf
+VERSION=${VERSION:-1.8.10}
+BUILD=${BUILD:-1}
+TAG=${TAG:-_sbolokanov}
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/sbolokanov}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i486 ;;
+    arm*) export ARCH=arm ;;
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX="64"
+else
+  LIBDIRSUFFIX=""
+fi
+
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z*
+cd $PKGNAM-$VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+sed -i '0,/env python/s//python3/' waf
+
+./waf-light configure --prefix=/usr
+./waf-light --make-waf \
+	--tools='compat,compat15,ocaml,go,cython,scala,erlang,cuda,gcj,boost,pep8,eclipse'
+
+./waf-light install -f --destdir="${PKG}" \
+	--tools='compat,compat15,ocaml,go,cython,scala,erlang,cuda,gcj,boost,pep8,eclipse'
+
+install -Dm755 waf "${PKG}/usr/bin/waf"
+
+# Force the generation of .waf.admin files
+cd demos/c
+"${PKG}/usr/bin/waf" configure build >& /dev/null
+cd ../..
+
+# Fix weird directory placement (FS#38216, FS#38300)
+mkdir -pv "${PKG}/usr/lib${LIBDIRSUFFIX}/waf"
+mv "${PKG}/usr/bin/.waf-${VERSION}"*/* "${PKG}/usr/lib${LIBDIRSUFFIX}/waf/"
+setconf "${PKG}/usr/bin/waf" base '"/usr/lib${LIBDIRSUFFIX}/waf"'
+
+mkdir -pv $PKG/usr/doc/$PKGNAM-$VERSION
+cat $CWD/$PKGNAM.SlackBuild > $PKG/usr/doc/$PKGNAM-$VERSION/$PKGNAM.SlackBuild
+
+mkdir -pv $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-required > $PKG/install/slack-required
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAM-$VERSION-$ARCH-$BUILD$TAG.txz
