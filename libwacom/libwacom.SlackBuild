@@ -54,11 +54,6 @@ fi
 
 set -e
 
-# I'm too lazy, let it grab the src code automatically
-if [ ! -r $PRGNAM-$VERSION.tar.bz2 ]; then
-  wget http://www.freedesktop.org/software/$PRGNAM/$PRGNAM-$VERSION.tar.xz
-fi
-
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
