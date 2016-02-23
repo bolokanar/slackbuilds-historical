@@ -1,6 +1,6 @@
 required:
-libwacom - note: if you do not want tablet support pass NOWACOM=yes to the script
+libwacom - note: if you do not want tablet support, pass NOWACOM=yes to the script
 
-optional
+optional:
 check - for tests
 graphviz - for docs
