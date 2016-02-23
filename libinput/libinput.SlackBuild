@@ -21,9 +21,15 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libinput
-VERSION=${VERSION:-0.21.0}
+VERSION=${VERSION:-1.2.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
+
+# Shall we use libwacom?
+NOWACOM=${NOWACOM:-no}
+if [ "$NOWACOM" = "yes" ]; then
+  DISABLEWACOM="--disable-libwacom"
+fi
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -84,10 +90,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-udev-dir=/etc/udev/rules.d \
   --enable-static=no \
   --enable-event-gui \
-  --enable-tests \
+  $DISABLEWACOM \
   --build=$ARCH-slackware-linux
-
-#   --enable-documentation \ - requires graphviz, check - needs working
 
 make -j4 || make
 make install-strip DESTDIR=$PKG
@@ -104,7 +108,7 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/slack-required > $PKG/install/slack-required
+cat $CWD/slack-suggests > $PKG/install/slack-suggests
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
