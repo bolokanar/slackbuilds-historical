@@ -37,15 +37,17 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-#rm -rf $PRGNAM-$VERSION
-#tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
-#cd $PRGNAM-$VERSION
 
-rm -rf toxcore
-git clone https://github.com/irungentoo/toxcore.git
-cd toxcore
-
-GIT_VERSION=$(git describe --tags --always)
+if [ "$VERSION" = "master" ]; then
+  rm -rf toxcore
+  git clone https://github.com/irungentoo/toxcore.git
+  cd toxcore
+  GIT_VERSION=$(git describe --tags --always)
+else
+  rm -rf $PRGNAM-$VERSION
+  tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+  cd $PRGNAM-$VERSION
+fi
 
 chown -R root:root .
 find -L . \
@@ -54,20 +56,23 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-./autogen.sh
+# --enable-daemon \ # requires libconfig
+autoreconf -i
 CFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --disable-static \
+  --enable-ntox \
   --build=$ARCH-slackware-linux
 
 make
 make install-strip DESTDIR=$PKG
 
+#  AUTHORS ChangeLog NEWS
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS ChangeLog COPYING INSTALL* NEWS README* \
+cp -a COPYING INSTALL* README* \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
@@ -76,5 +81,8 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/slack-required > $PKG/install/slack-required
 
 cd $PKG
-#/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-git_$GIT_VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+if [ "$VERSION" = "master" ]; then
+  /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-git_$GIT_VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+else
+  /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+fi
