@@ -1,15 +1,16 @@
 #!/bin/sh
 
 # SlackBuild for dunst
-# Written by Simon Bolokanov <sbolokanov@abv.bg>
+# Written by Симонъ С. Болокановъ – Бдинъ, България <sbolokanov@abv.bg>
 # changelog:
 #    v1.0.0/master - Simon Bolokanov
 #    v1.1.0 - 12.12.2014
 #     15.3.2015 - main site is down, fixed download url. Made some script clean ups
+#     3.4.2016 - don't clobber the config
 
 PRGNAM=dunst
 VERSION=${VERSION:-1.1.0}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_sbolokanov}
 
 if [ -z "$ARCH" ]; then
@@ -79,6 +80,9 @@ make DESTDIR=$PKG \
   MANPREFIX=/usr/man \
   install
 
+# Don't clobber the default config
+mv $PKG/etc/xdg/dunst/dunstrc $PKG/etc/xdg/dunst/dunstrc.new
+
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 
 mkdir -pv $PKG/usr/doc/$PRGNAM-$VERSION
@@ -88,6 +92,7 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -pv $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 cat $CWD/slack-required > $PKG/install/slack-required
 
 cd $PKG
