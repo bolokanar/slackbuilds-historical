@@ -21,12 +21,12 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libinput
-VERSION=${VERSION:-1.2.1}
+VERSION=${VERSION:-1.4.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 # Shall we use libwacom?
-NOWACOM=${NOWACOM:-no}
+NOWACOM=${NOWACOM:-yes}
 if [ "$NOWACOM" = "yes" ]; then
   DISABLEWACOM="--disable-libwacom"
 fi
@@ -87,9 +87,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --with-udev-dir=/etc/udev/rules.d \
+  --with-udev-dir=/etc/udev \
   --enable-static=no \
-  --enable-event-gui \
   $DISABLEWACOM \
   --build=$ARCH-slackware-linux
 
