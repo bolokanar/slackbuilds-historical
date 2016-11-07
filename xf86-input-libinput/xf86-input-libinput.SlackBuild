@@ -21,7 +21,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=xf86-input-libinput
-VERSION=${VERSION:-0.19.0}
+VERSION=${VERSION:-0.22.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -91,9 +91,6 @@ CXXFLAGS="$SLKCFLAGS" \
 make -j4 || make
 make install-strip DESTDIR=$PKG
 
-#find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
-#  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
-
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
@@ -101,8 +98,15 @@ mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a ChangeLog COPYING INSTALL README* $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
+# Do not install config by default
+#mv -v $PKG/etc/X11/xorg.conf.d/60-libinput.conf $PKG/usr/doc/$PRGNAM-$VERSION
+#rm -rv $PKG/etc
+
+mv -v $PKG/etc/X11/xorg.conf.d/40-libinput.conf $PKG/etc/X11/xorg.conf.d/40-libinput.conf.new
+
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
