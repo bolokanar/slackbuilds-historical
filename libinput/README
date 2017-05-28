@@ -1,7 +1,0 @@
-optional:
-libwacom - if you need WACOM tablet support, pass NOWACOM=no to the script
-
-check - for tests
-graphviz - for docs
-valgrind
-libunwind
